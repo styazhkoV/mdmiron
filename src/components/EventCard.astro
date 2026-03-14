@@ -1,0 +1,87 @@
+---
+import { type CollectionEntry } from 'astro:content';
+
+interface Props {
+  event: CollectionEntry<'events'>;
+}
+
+const { event } = Astro.props;
+const { title, date, venue, city, status, ticketUrl, description } = event.data;
+
+const dateFormatted = new Date(date).toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric'
+});
+
+const isUpcoming = status === 'upcoming';
+---
+
+<article class="group relative bg-surface border border-white/5 transition-all duration-300 hover:border-accent/40 overflow-hidden flex flex-col h-full">
+  <!-- Status Badge -->
+  <div class="absolute top-4 right-4 z-10 flex items-center gap-2">
+    <span class="relative flex h-2 w-2">
+      <span class=`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isUpcoming ? 'bg-accent' : 'bg-gray-500'}`></span>
+      <span class=`relative inline-flex rounded-full h-2 w-2 ${isUpcoming ? 'bg-accent' : 'bg-gray-500'}`></span>
+    </span>
+    <span class="text-[10px] font-mono uppercase tracking-widest text-white/70">
+      {status}
+    </span>
+  </div>
+
+  <div class="p-6 md:p-8 flex flex-col flex-grow relative z-10">
+    <!-- Date & Location -->
+    <div class="mb-4">
+      <time class="font-mono text-accent text-sm mb-1 block">
+        {dateFormatted}
+      </time>
+      <div class="flex items-center gap-2 text-gray-400 text-xs font-mono uppercase tracking-wider">
+        <span>{city}</span>
+        <span class="w-1 h-1 bg-white/20 rounded-full"></span>
+        <span>{venue}</span>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h3 class="text-2xl font-bold font-sans text-white mb-4 group-hover:text-accent transition-colors">
+      {title}
+    </h3>
+
+    <!-- Description (Optional) -->
+    {description && (
+      <p class="text-gray-400 text-sm line-clamp-3 mb-6 flex-grow font-mono leading-relaxed">
+        {description}
+      </p>
+    )}
+    
+    <!-- Spacer if no description -->
+    {!description && <div class="flex-grow"></div>}
+
+    <!-- Action -->
+    <div class="mt-auto pt-6 border-t border-white/5">
+      {isUpcoming && ticketUrl ? (
+        <a 
+          href={ticketUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-white font-mono text-xs uppercase tracking-widest hover:text-accent transition-colors group/btn"
+        >
+          Get Tickets
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      ) : (
+        <span class="text-gray-500 font-mono text-xs uppercase tracking-widest flex items-center gap-2">
+          Tickets Unavailable
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+          </svg>
+        </span>
+      )}
+    </div>
+  </div>
+
+  <!-- Decorative glow effect on hover -->
+  <div class="absolute inset-0 bg-gradient-to-tr from-accent/0 via-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
+</article>

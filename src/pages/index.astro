@@ -1,0 +1,199 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/Hero.astro';
+import EventCard from '../components/EventCard.astro';
+import SoundCloudPlayer from '../components/SoundCloudPlayer.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { getCollection } from 'astro:content';
+
+// Sort events by date
+const allEvents = await getCollection('events');
+const sortedEvents = allEvents.sort((a, b) => new Date(a.data.date).valueOf() - new Date(b.data.date).valueOf());
+
+// We can mock some events if the collection is empty for demonstration
+const displayEvents = sortedEvents.length > 0 ? sortedEvents : [
+  {
+    id: "mock-1",
+    collection: "events",
+    data: {
+      title: "Warehouse Project 001",
+      date: new Date("2026-04-15"),
+      venue: "Secret Location",
+      city: "Berlin",
+      status: "upcoming" as const,
+      ticketUrl: "#"
+    }
+  },
+  {
+    id: "mock-2",
+    collection: "events",
+    data: {
+      title: "Industrial Nightmares",
+      date: new Date("2026-05-20"),
+      venue: "Tresor",
+      city: "Berlin",
+      status: "upcoming" as const,
+      ticketUrl: "#"
+    }
+  },
+  {
+    id: "mock-3",
+    collection: "events",
+    data: {
+      title: "Basement Sessions",
+      date: new Date("2025-12-10"),
+      venue: "Fabric",
+      city: "London",
+      status: "past" as const
+    }
+  }
+];
+---
+
+<MainLayout title="MD MRON | DJ & Techno Event Organizer">
+  
+  <Hero />
+
+  <!-- About Section -->
+  <section id="about" class="py-24 bg-dark relative border-b border-light/5">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row gap-16 items-center">
+        <div class="w-full md:w-1/2">
+          <h2 class="text-4xl md:text-5xl font-black font-sans text-white mb-6 uppercase tracking-tighter">
+            Sonic <span class="text-accent">Architecture</span>
+          </h2>
+          <div class="w-20 h-1 bg-accent mb-8"></div>
+          <p class="text-gray-400 font-mono text-base leading-relaxed mb-6">
+            MD MRON is an independent entity dedicated to the curation and performance of high-fidelity underground techno. We construct environments where sound, light, and space converge to create uncompromising sensory experiences.
+          </p>
+          <p class="text-gray-400 font-mono text-base leading-relaxed mb-8">
+            Operating outside the mainstream, our focus remains strictly on the raw, hypnotic, and driving forces of industrial techno music. No compromises.
+          </p>
+          <a href="#contact" class="inline-flex text-white font-mono uppercase tracking-widest text-sm hover:text-accent transition-colors border-b border-white/20 pb-1 hover:border-accent">
+            Connect for Collaborations
+          </a>
+        </div>
+        
+        <div class="w-full md:w-1/2 relative">
+          <div class="aspect-square bg-surface border border-white/10 relative overflow-hidden group">
+            <div class="absolute inset-0 bg-dark/50 z-10 group-hover:bg-transparent transition-colors duration-700"></div>
+            <!-- Placeholder for DJ image -->
+            <img 
+              src="https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+              alt="MD MRON mixing at a club" 
+              class="w-full h-full object-cover grayscale opacity-60 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-1000"
+            />
+            
+            <div class="absolute bottom-6 left-6 z-20">
+              <span class="bg-black/80 backdrop-blur-sm text-white font-mono text-xs px-3 py-1 border border-white/20 uppercase">
+                Location // undisclosed
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events Section -->
+  <section id="events" class="py-24 bg-surface relative">
+    <!-- Grid Pattern Background -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: linear-gradient(#f0f0f0 1px, transparent 1px), linear-gradient(to right, #f0f0f0 1px, transparent 1px); background-size: 40px 40px;"></div>
+    
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+        <div>
+          <h2 class="text-4xl md:text-5xl font-black font-sans text-white mb-4 uppercase tracking-tighter">
+            Missions & <span class="text-accent">Events</span>
+          </h2>
+          <div class="w-20 h-1 bg-accent"></div>
+        </div>
+        <a href="#contact" class="hidden md:inline-flex text-gray-400 font-mono text-xs uppercase tracking-widest hover:text-white transition-colors">
+          Request Booking
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {displayEvents.map((event) => (
+          <EventCard event={event as any} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Music Section -->
+  <section id="music" class="py-24 bg-dark relative">
+    <div class="container mx-auto px-6">
+      <div class="mb-16">
+        <h2 class="text-4xl md:text-5xl font-black font-sans text-white mb-4 uppercase tracking-tighter">
+          Transmissions / <span class="text-accent">Audio</span>
+        </h2>
+        <div class="w-20 h-1 bg-accent"></div>
+        <p class="mt-6 text-gray-400 font-mono max-w-2xl text-sm">
+          Latest mixes, podcasts, and recordings from recent sets. The player status persists across site navigation for uninterrupted listening.
+        </p>
+      </div>
+
+      <div class="max-w-4xl mx-auto">
+        <SoundCloudPlayer />
+        
+        <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Additional smaller soundcloud embeds or links -->
+          <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1344404095&color=%23050505&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true" class="grayscale mix-blend-luminosity hover:grayscale-0 transition-all duration-500 opacity-60 hover:opacity-100"></iframe>
+          <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1586940089&color=%23050505&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true" class="grayscale mix-blend-luminosity hover:grayscale-0 transition-all duration-500 opacity-60 hover:opacity-100"></iframe>
+        </div>
+        
+        <div class="mt-12 text-center">
+          <a href="https://soundcloud.com" target="_blank" rel="noopener noreferrer" class="btn-outline inline-flex mx-auto">
+            View Full Archive
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 bg-dark relative border-t border-white/5">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div>
+          <h2 class="text-4xl md:text-5xl font-black font-sans text-white mb-6 uppercase tracking-tighter">
+            Establish <span class="text-accent">Contact</span>
+          </h2>
+          <div class="w-20 h-1 bg-accent mb-8"></div>
+          
+          <div class="space-y-8 mt-12">
+            <div>
+              <h4 class="font-mono text-xs uppercase tracking-widest text-gray-500 mb-2">Direct Channel</h4>
+              <a href="mailto:booking@mdmron.com" class="text-2xl font-mono text-white hover:text-accent transition-colors break-all">
+                BOOKING@MDMRON.COM
+              </a>
+            </div>
+            
+            <div>
+              <h4 class="font-mono text-xs uppercase tracking-widest text-gray-500 mb-2">Social Network</h4>
+              <div class="flex gap-4">
+                <a href="https://instagram.com/manana.ala" target="_blank" rel="noopener noreferrer" class="text-xl font-mono text-white hover:text-accent transition-colors border-b border-transparent hover:border-accent">INSTAGRAM</a
+>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="text-xl font-mono text-white hover:text-accent transition-colors border-b border-transparent hover:border-accent">RA</a
+>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Decorative element -->
+          <div class="mt-16 text-gray-600 font-mono text-[10px] uppercase tracking-widest flex flex-col gap-1">
+            <span>SYS.STATUS // ONLINE</span>
+            <span>ENCRYPTION // ENABLED</span>
+            <span>CONNECTION // SECURE</span>
+          </div>
+        </div>
+        
+        <div>
+          <ContactForm />
+        </div>
+      </div>
+    </div>
+  </section>
+
+</MainLayout>

@@ -1,0 +1,37 @@
+---
+interface Props {
+  url?: string;
+  title?: string;
+}
+
+// Default to a dark techno mix if no URL provided
+const { url = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1451551609&color=%23050505&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true" } = Astro.props;
+---
+
+<div class="relative w-full overflow-hidden bg-dark border border-white/10 group rounded-sm" transition:persist="soundcloud-player">
+  <div class="absolute inset-0 z-10 pointer-events-none group-hover:bg-dark/20 transition-colors duration-500"></div>
+  
+  <iframe 
+    class="w-full h-80 grayscale mix-blend-luminosity opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" 
+    scrolling="no" 
+    frameborder="no" 
+    allow="autoplay" 
+    src={url}>
+  </iframe>
+
+  <!-- Custom decorative overlay styling to match the site aesthetic -->
+  <div class="absolute top-0 right-0 p-4 z-20 pointer-events-none flex items-start justify-end opacity-50">
+    <div class="flex flex-col items-end gap-1">
+      <span class="w-12 h-1 bg-accent block"></span>
+      <span class="w-8 h-1 bg-accent/50 block"></span>
+      <span class="w-4 h-1 bg-accent/20 block"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Optional: Further style overrides for the iframe if necessary */
+  iframe {
+    background-color: transparent !important;
+  }
+</style>

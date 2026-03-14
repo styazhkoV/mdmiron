@@ -1,0 +1,116 @@
+---
+---
+
+<div class="bg-surface p-8 md:p-12 border border-white/5 relative">
+  <!-- Accent top line -->
+  <div class="absolute top-0 left-0 w-full h-1 bg-accent/20"></div>
+  <div class="absolute top-0 left-0 w-1/3 h-1 bg-accent"></div>
+
+  <div class="mb-10">
+    <h3 class="text-3xl font-bold font-sans text-white mb-2">Bookings & Inquiries</h3>
+    <p class="text-gray-400 font-mono text-sm">
+      Available for club events, festivals, and private techno showcases.
+    </p>
+  </div>
+
+  <form class="space-y-6" action="#" method="POST" id="contactForm">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Name -->
+      <div class="space-y-2">
+        <label for="name" class="block font-mono text-xs uppercase tracking-widest text-gray-500">Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          required
+          class="w-full bg-dark border-b border-white/20 text-white font-mono placeholder:text-gray-600 focus:outline-none focus:border-accent focus:ring-0 py-3 transition-colors rounded-none"
+          placeholder="ENTER FULL NAME"
+        />
+      </div>
+      
+      <!-- Email -->
+      <div class="space-y-2">
+        <label for="email" class="block font-mono text-xs uppercase tracking-widest text-gray-500">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          required
+          class="w-full bg-dark border-b border-white/20 text-white font-mono placeholder:text-gray-600 focus:outline-none focus:border-accent focus:ring-0 py-3 transition-colors rounded-none"
+          placeholder="JOHNDOE@EXAMPLE.COM"
+        />
+      </div>
+    </div>
+
+    <!-- Event Type -->
+    <div class="space-y-2">
+      <label for="type" class="block font-mono text-xs uppercase tracking-widest text-gray-500">Event Type</label>
+      <select 
+        id="type" 
+        name="type" 
+        class="w-full bg-dark border-b border-white/20 text-white font-mono focus:outline-none focus:border-accent focus:ring-0 py-3 transition-colors appearance-none rounded-none cursor-pointer"
+      >
+        <option value="" disabled selected class="text-gray-600">SELECT EVENT TYPE</option>
+        <option value="club">Club Night</option>
+        <option value="festival">Festival Stage</option>
+        <option value="private">Private Showcase</option>
+        <option value="other">Other Inquiry</option>
+      </select>
+      <!-- Custom arrow for select -->
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4" style="top: 55%; transform: translateY(-50%)">
+        <svg class="w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <div class="space-y-2">
+      <label for="message" class="block font-mono text-xs uppercase tracking-widest text-gray-500">Message / Details</label>
+      <textarea 
+        id="message" 
+        name="message" 
+        rows="4" 
+        required
+        class="w-full bg-dark border-b border-white/20 text-white font-mono placeholder:text-gray-600 focus:outline-none focus:border-accent focus:ring-0 py-3 transition-colors resize-none rounded-none"
+        placeholder="PROVIDE SECURE LOCATION AND TIME COORDINATES"
+      ></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button 
+      type="submit" 
+      class="w-full btn-accent relative overflow-hidden group/submit mt-8"
+    >
+      <span class="relative z-10 transition-transform duration-300 group-hover/submit:translate-x-2">Transmit Request</span>
+      <span class="absolute inset-0 bg-white translate-x-[-100%] group-hover/submit:translate-x-0 transition-transform duration-300 ease-out z-0"></span>
+      <span class="relative z-10 flex items-center group-hover/submit:text-dark transition-colors duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 ml-2 transform group-hover/submit:translate-x-1 transition-transform">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+        </svg>
+      </span>
+    </button>
+  </form>
+</div>
+
+<script>
+  // Simple form mock interaction
+  const form = document.getElementById('contactForm');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      if (btn) {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span class="relative z-10">TRANSMITTING...</span>';
+        
+        setTimeout(() => {
+          btn.innerHTML = '<span class="relative z-10 text-green-500 font-bold">TRANSMISSION SECURED</span>';
+          form.reset();
+          
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+          }, 3000);
+        }, 1500);
+      }
+    });
+  }
+</script>
